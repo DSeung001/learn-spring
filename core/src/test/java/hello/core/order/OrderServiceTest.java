@@ -1,16 +1,26 @@
 package hello.core.order;
 
+import hello.core.AppConfig;
 import hello.core.memeber.Grade;
 import hello.core.memeber.Member;
 import hello.core.memeber.MemberService;
 import hello.core.memeber.MemberServiceImpl;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class OrderServiceTest {
 
-    MemberService memberService = new MemberServiceImpl();
-    OrderService orderService = new OrderServiceImpl();
+    MemberService memberService;
+    OrderService orderService;
+
+    @BeforeEach
+    /* 테스트 실행전 실행 */
+    public void beforeEach(){
+        AppConfig appConfig = new AppConfig();
+        memberService = appConfig.memberService();
+        orderService = appConfig.orderService();
+    }
 
     @Test
     void createOrder(){
