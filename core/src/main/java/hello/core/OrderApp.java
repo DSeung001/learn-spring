@@ -1,8 +1,8 @@
 package hello.core;
 
-import hello.core.memeber.Grade;
-import hello.core.memeber.Member;
-import hello.core.memeber.MemberService;
+import hello.core.member.Grade;
+import hello.core.member.Member;
+import hello.core.member.MemberService;
 import hello.core.order.Order;
 import hello.core.order.OrderService;
 import org.springframework.context.ApplicationContext;

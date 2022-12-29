@@ -1,4 +1,4 @@
-package hello.core.memeber;
+package hello.core.member;
 
 /*
 enumeration type : 열거체로, 상수를 클래스처럼 보이게 해주는 것
