@@ -10,6 +10,8 @@ import hello.core.order.OrderServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+
+// 팩토리 메소드를 통해서 설정하는 방법
 @Configuration
 public class AppConfig {
 
