@@ -33,4 +33,14 @@ public class ConfigurationSingletonTest {
         assertThat(memberService.getMemberRepository()).isSameAs(memberRepository);
         assertThat(orderService.getMemberRepository()).isSameAs(memberRepository);
     }
+
+    @Test
+    void configurationDeep(){
+        ApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+        AppConfig bean = ac.getBean(AppConfig.class);
+
+        // AppConfig는 내가 선언한게 아닌 다른 클래스를 스프링에서 만든 것
+        // Bean에서는 내가 요청한게 이미 있으면 그걸로 주고 없으면 내가 만든 AppConfig를 상속받은 AppConfig@CGLIB에서 가져옴
+        System.out.println("bean.getClass() = " + bean.getClass());
+    }
 }
