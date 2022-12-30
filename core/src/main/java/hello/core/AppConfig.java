@@ -21,16 +21,23 @@ public class AppConfig {
     // => 이걸 생성자 주입이라 함
     @Bean
     public MemberService memberService(){
+        System.out.println("AppConfig.memberService");
         return new MemberServiceImpl(memberRepository());
     }
 
+    /*
+    * @Bean에 설정해둔 메서드에 static을 붙이면 이 부분을 사용하는 곳이 다른 주소를 나타냄
+    * static이 없으면 사용하는 곳은 전부 같은 걸 사용
+    * */
     @Bean
-    public static MemoryMemberRepository memberRepository() {
+    public MemoryMemberRepository memberRepository() {
+        System.out.println("AppConfig.memberRepository");
         return new MemoryMemberRepository();
     }
 
     @Bean
     public OrderService orderService(){
+        System.out.println("AppConfig.orderService");
         return new OrderServiceImpl(memberRepository(), discountPolicy());
     }
 
