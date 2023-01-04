@@ -22,8 +22,8 @@ import org.springframework.context.annotation.FilterType;
 ) // 수동으로 빈을 등록한 AppConfig 제외, + 다른 configuration 들도 제외
 public class AutoAppConfig {
 
-    @Bean(name = "memoryMemberRepository")
+/*    @Bean(name = "memoryMemberRepository")
     MemberRepository memberRepository(){
         return new MemoryMemberRepository();
-    }
+    }*/
 }
