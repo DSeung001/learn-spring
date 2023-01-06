@@ -15,16 +15,15 @@ public class OrderServiceImpl implements OrderService{
 //    @Autowired private MemberRepository memberRepository;
 //    @Autowired private DiscountPolicy discountPolicy;
 
-    private MemberRepository memberRepository;
-    private DiscountPolicy discountPolicy;
+    // 생성자에서만 값을 주입할 수 있음, 만약 final 값을 생성자에서 초기화 안하면 에러를 발생시킴 (자바 컴파일러가)
+    private final MemberRepository memberRepository;
+    private final DiscountPolicy discountPolicy;
 
     /*public void setMemberRepository(MemberRepository memberRepository) {
-        System.out.println("memberRepository = " + memberRepository);
         this.memberRepository = memberRepository;
     }
 
     public void setDiscountPolicy(DiscountPolicy discountPolicy) {
-        System.out.println("discountPolicy = " + discountPolicy);
         this.discountPolicy = discountPolicy;
     }*/
 
@@ -37,11 +36,11 @@ public class OrderServiceImpl implements OrderService{
     }
 
 //    일반 메서드 주입, 한번에 여러 필드를 주입 받을 수 있다 => 보통 생성자로 대체함
-    @Autowired
+    /*@Autowired
     public void init(MemberRepository memberRepository, DiscountPolicy discountPolicy){
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
-    }
+    }*/
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
