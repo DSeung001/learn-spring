@@ -3,10 +3,12 @@ package hello.core.order;
 import hello.core.discount.DiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService{
 
     // final로 불변처리, private에는 의존관계 주입 가능
@@ -29,11 +31,12 @@ public class OrderServiceImpl implements OrderService{
 
     // 생성자가 하나일 때는 자동으로 Autowired를 해줘서 생략이 가능
 //    @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-        System.out.println("OrderServiceImpl.OrderServiceImpl");
-        this.memberRepository = memberRepository;
-        this.discountPolicy = discountPolicy;
-    }
+//    @RequiredArgsConstructor 이게 아래 코드를 똑같이 생성
+//    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+//        System.out.println("OrderServiceImpl.OrderServiceImpl");
+//        this.memberRepository = memberRepository;
+//        this.discountPolicy = discountPolicy;
+//    }
 
 //    일반 메서드 주입, 한번에 여러 필드를 주입 받을 수 있다 => 보통 생성자로 대체함
     /*@Autowired
