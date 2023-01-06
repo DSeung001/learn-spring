@@ -35,7 +35,7 @@ public class OrderServiceImpl implements OrderService{
     // 생성자가 하나일 때는 자동으로 Autowired를 해줘서 생략이 가능
     @Autowired
 //    @RequiredArgsConstructor 이게 아래 코드를 똑같이 생성
-    public OrderServiceImpl(MemberRepository memberRepository, @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
