@@ -17,7 +17,7 @@ public class BeanLifeCycle {
 
     @Configuration
     static class LifeCycleConfig{
-        @Bean
+        @Bean(initMethod = "init", destroyMethod = "close")
         public NetworkClient networkClient(){
             NetworkClient networkClient = new NetworkClient();
             // 외부에서 초기화를 하고 호출해야하는 경우가 존재함
