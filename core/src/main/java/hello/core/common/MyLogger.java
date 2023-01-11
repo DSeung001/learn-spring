@@ -25,7 +25,7 @@ public class MyLogger {
     public void init(){
         // Global하게 Unique한 아이디 생성
         // 확률이 로또의 로또의 로또보다 낮을 거임
-        UUID.randomUUID().toString();
+        uuid = UUID.randomUUID().toString();
         System.out.println("[" + uuid + "] request scope bean create:"+this);
     }
 
