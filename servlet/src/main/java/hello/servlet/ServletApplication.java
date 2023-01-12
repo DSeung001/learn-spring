@@ -2,6 +2,10 @@ package hello.servlet;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
+
+// 하위 경로의 모든 서블릿을 탐색하여 자동 등록
+@ServletComponentScan
 
 @SpringBootApplication
 public class ServletApplication {
