@@ -11,6 +11,8 @@ import java.util.Enumeration;
 /**
 * 1. 파라미터 전송 기능
  * https://localhost/reqeust-param?username=hello&age=20
+ * 여기서 Parameter는 GET과 POST에 구분을 두지 않음
+ * 같은 application/x-www-form-urlencoded 형식
 */
 @WebServlet(name = "requestParamServlet", urlPatterns = "/request-param")
 public class RequestParamServlet extends HttpServlet {
