@@ -55,7 +55,7 @@ public class RequestBodyStringController {
     }
 
     // 애노테이션이 최고야
-    // 반환하는 문자열을 ResponseBody 에
+    // @ResponseBody는 응답 결과를 HTTP 메시지 바디에 직접 담아서 전달
     // 해더 정보가 필요하면 @RequestHeader를 사용하면 됨
     // 이렇게 바디를 조회하는 건 요청 파라미터를 조회하는 @RequestParam, @ModelAttribute 와는 전혀 관계 없음!
     @ResponseBody
