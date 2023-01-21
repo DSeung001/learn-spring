@@ -1,7 +1,9 @@
 package hello.springmvc.basic.request;
 
+import hello.springmvc.basic.HelloData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -102,6 +104,26 @@ public class RequestParamController {
             @RequestParam Map<String, Object> paramMap
     ){
         log.info("username={}, age={}", paramMap.get("username"), paramMap.get("age"));
+        return "ok";
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/model-attribute-v1")
+    public String modalAttributeV1(@ModelAttribute HelloData helloData){
+        log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
+        log.info("helloData={}", helloData);
+        return "ok";
+    }
+
+    // 놀랍게도 ModelAttribute 도 생략이 가능하다.
+//      - String, int, Integer와 같은 단순 타입은 @RequestParam
+//      - 나머지 - @ModelAttribute(argument resolver로 지정해둔 타입 외)
+    @ResponseBody
+    @RequestMapping("/model-attribute-v2")
+    public String modalAttributeV2(HelloData helloData){
+        log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
+        log.info("helloData={}", helloData);
         return "ok";
     }
 }
