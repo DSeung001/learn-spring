@@ -72,7 +72,7 @@ public class BasicItemController {
     }
 
 //    @PostMapping("/add")
-    public String saveItemV2(
+    public String saveItemV3(
             @ModelAttribute Item item
     ){
         // ModelAttribute에 alias를 지정안하면 클래스의 첫글자를 바꾼 값으로 모델에 넣어줌
@@ -82,10 +82,16 @@ public class BasicItemController {
 
     // String이나 int 같은 단순 타입이 오면 RequestParam이 적용되고 아닌 경우 객체를 통해 받음
     // 아래 처럼 ModelAttribute도 생략이 가능, 마찬가지로 모델에는 클래스 명의 첫글자가 소문자로 들어감
-    @PostMapping("/add")
-    public String saveItemV3(Item item){
+//    @PostMapping("/add")
+    public String saveItemV4(Item item){
         itemRepository.save(item);
         return "basic/item";
+    }
+
+    @PostMapping("/add")
+    public String saveItemV5(Item item){
+        itemRepository.save(item);
+        return "redirect:/basic/items/" + item.getId();
     }
 
     @GetMapping("/{itemId}/edit")
