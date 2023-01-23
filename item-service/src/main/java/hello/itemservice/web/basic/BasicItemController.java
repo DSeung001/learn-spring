@@ -88,6 +88,21 @@ public class BasicItemController {
         return "basic/item";
     }
 
+    @GetMapping("/{itemId}/edit")
+    public String editForm(@PathVariable Long itemId, Model model){
+        Item item = itemRepository.findById(itemId);
+        model.addAttribute("item", item);
+        return "basic/editForm";
+    }
+
+    @PostMapping("/{itemId}/edit")
+    public String edit(@PathVariable Long itemId, @ModelAttribute Item item){
+        itemRepository.update(itemId, item);
+        // Status 302 => redirect!
+        // redirect 쓰는 이유는 POST로 요청 후 새로고침 했을 때 중복로직이 발생하는데 이를 방지해줌
+        return "redirect:/basic/items/{itemId}";
+    }
+
     // 테스트 용
     // 객체가 생성된 후 별도의 초기화 작업으로 이 메소드를 진행해줌
     @PostConstruct
