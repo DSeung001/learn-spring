@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -88,10 +89,23 @@ public class BasicItemController {
         return "basic/item";
     }
 
-    @PostMapping("/add")
+//    @PostMapping("/add")
     public String saveItemV5(Item item){
         itemRepository.save(item);
+        // 아래처럼 url에 +item.getId()는 위험한 코드 만약 한글이 들어가면 깨지기에 인코딩을 해줘야함
+        // 인코딩을 해주려면 RedirectAttributes를 사용하면 됨
         return "redirect:/basic/items/" + item.getId();
+    }
+
+    @PostMapping("/add")
+    public String saveItemV6(Item item, RedirectAttributes redirectAttributes){
+        Item savedItem = itemRepository.save(item);
+
+        redirectAttributes.addAttribute("itemId", savedItem.getId());
+        redirectAttributes.addAttribute("status", true);
+        // itmeId처럼 치환이 되는건 해주고 니머지인 status는 query parameter로
+        // 자동으로 URL 인코딩도 해준다!
+        return "redirect:/basic/items/{itemId}";
     }
 
     @GetMapping("/{itemId}/edit")

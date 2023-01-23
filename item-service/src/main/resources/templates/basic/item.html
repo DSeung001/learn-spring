@@ -15,6 +15,12 @@
   <div class="py-5 text-center">
     <h2>상품 상세</h2>
   </div>
+
+<!-- HTTP 파라미터를 너무 사용해서 쓸 수 있게 해줌 -->
+  <h2 th:if="${param.status}" th:text="'저장 완료'">
+    저장 성공 여부
+  </h2>
+
   <div>
     <label for="itemId">상품 ID</label>
     <input type="text" id="itemId" name="itemId" class="form-control"
