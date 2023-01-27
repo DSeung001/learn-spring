@@ -7,6 +7,17 @@ import javax.persistence.Id;
 // 만약 테이블명이 클래스명과 다르면 @Table(name="USER")과 같이 추가 해야함
 @Entity
 public class Member {
+
+    // JPA는 리다이렉션을 자주하기에 기본 생성자가 존재해야 에러 발생 x
+    public Member(){
+
+    }
+
+    public Member(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     @Id
     private Long id;
     // 컬럼명도 @Column(name = "username")으로 가능
