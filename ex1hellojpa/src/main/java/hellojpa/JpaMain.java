@@ -14,9 +14,11 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = em.find(Member.class, 150L);
-            member.setName("zzzzzzz");
-            System.out.println("===================");
+            Member member = new Member(200L, "member200");
+            em.persist(member);
+            em.flush();
+            System.out.println("=========");
+
             tx.commit();
         }catch(Exception e){
             tx.rollback();
