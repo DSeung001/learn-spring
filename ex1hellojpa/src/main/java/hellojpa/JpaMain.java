@@ -24,10 +24,13 @@ public class JpaMain {
 
             // 영속 - Flush
             /*
+=======
+>>>>>>> 15b5468 (플러시)
             Member member = new Member(200L, "member200");
             em.persist(member);
             em.flush();
             System.out.println("=========");
+<<<<<<< HEAD
             */
 
             tx.commit();
