@@ -14,10 +14,21 @@ public class JpaMain {
         tx.begin();
 
         try {
+            // 영속성 : 준영속 상태로 만들어서 영속성을 쓰지 못해 쿼리가 2번 실행됨!
+            Member member = em.find(Member.class, 200L);
+            member.setName("bbbb");
+
+            em.clear();
+
+            Member member2 = em.find(Member.class, 200L);
+
+            // 영속 - Flush
+            /*
             Member member = new Member(200L, "member200");
             em.persist(member);
             em.flush();
             System.out.println("=========");
+            */
 
             tx.commit();
         }catch(Exception e){
