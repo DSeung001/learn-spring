@@ -7,7 +7,30 @@ import javax.persistence.Persistence;
 import java.util.List;
 
 public class JpaMain {
+
+    // 단원 : 엔티티 매핑
     public static void main(String[] args) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        try{
+            Member member = new Member();
+            member.setId(2L);
+            member.setUsername("B");
+            member.setRoleType(RoleType.ADMIN);
+            em.persist(member);
+            tx.commit();
+        }catch (Exception e){
+            tx.rollback();
+        }finally {
+            em.close();
+        }
+        emf.close();
+    }
+
+    // 단원 : 영속성 관리 - 내부 동작 방식
+    /*public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -15,20 +38,20 @@ public class JpaMain {
 
         try {
             // 영속성 : 준영속 상태로 만들어서 영속성을 쓰지 못해 쿼리가 2번 실행됨!
-/*            Member member = em.find(Member.class, 200L);
+            Member member = em.find(Member.class, 200L);
             member.setName("bbbb");
 
             em.clear();
 
-            Member member2 = em.find(Member.class, 200L);*/
+            Member member2 = em.find(Member.class, 200L);
 
             // 영속 - Flush
-            /*
-            Member member = new Member(200L, "member200");
-            em.persist(member);
-            em.flush();
-            System.out.println("=========");
-            */
+
+//            Member member = new Member(200L, "member200");
+//            em.persist(member);
+//            em.flush();
+//            System.out.println("=========");
+
 
             tx.commit();
         }catch(Exception e){
@@ -37,7 +60,7 @@ public class JpaMain {
             em.close();
         }
         emf.close();
-    }
+    }*/
 
     /*
     단원 : JPA 소개
