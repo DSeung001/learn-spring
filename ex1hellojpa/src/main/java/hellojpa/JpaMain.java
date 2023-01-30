@@ -15,20 +15,38 @@ public class JpaMain {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try{
-            Member member1 = new Member();
-            Member member2 = new Member();
-            Member member3 = new Member();
-            member1.setUsername("A");
-            member2.setUsername("B");
-            member3.setUsername("C");
-            System.out.println("====");
-            em.persist(member1);
-            em.persist(member2);
-            em.persist(member3);
-            System.out.println("member1 = " + member1.getId());
-            System.out.println("member2 = " + member2.getId());
-            System.out.println("member3 = " + member3.getId());
-            System.out.println("=====");
+            // 아래 예시는 연관관계를 쓰지 않고 객체 중심이 아닌 테이블 중심의 설계를 햇을 경우 어떻게 개발해야지에 대한 것
+//            Team team = new Team();
+//            team.setName("TeamA");;
+//            em.persist(team);
+//
+//            Member member = new Member();
+//            member.setUsername("member1");
+//            member.setTeamId(team.getId());
+//            em.persist(member);
+//
+//            Member findMember = em.find(Member.class, member.getId());
+//            Long findTeamId = findMember.getTeamId();
+//            Team findTeam = em.find(Team.class, findTeamId);
+
+            // 연관관계 사용 후
+            Team team = new Team();
+            team.setName("TeamA");;
+            em.persist(team);
+
+            System.out.println("====1");
+            em.flush();
+            em.clear();
+            System.out.println("====2");
+
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setTeam(team);
+            em.persist(member);
+
+            Member findMember = em.find(Member.class, member.getId());
+            Team findTeam = findMember.getTeam();
+
             tx.commit();
         }catch (Exception e){
             tx.rollback();
