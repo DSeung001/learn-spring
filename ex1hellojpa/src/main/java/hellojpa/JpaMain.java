@@ -7,9 +7,34 @@ import javax.persistence.Persistence;
 import java.util.List;
 
 public class JpaMain {
+    // 단원 : 다양한 연관관계 매핑
+    public static void main(String[] args) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        try{
+            Member member = new Member();
+            member.setUsername("member1");
+            em.persist(member);
+
+            Team team = new Team();
+            team.setName("teamA");
+            team.getMembers().add(member);
+
+            em.persist(team);
+
+            tx.commit();
+        }catch(Exception e){
+            tx.rollback();
+        }finally {
+            em.close();
+        }
+        emf.close();
+    }
 
     // 단원 : 엔티티 매핑
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -61,11 +86,11 @@ public class JpaMain {
                 System.out.println("member.getUsername() = " + m.getUsername());
             }
             System.out.println("======");
-            /*
+            *//*
             * 양방향에서는 양쪽에 값을 설정하자
             * 개발에는 단방향으로 작업하다가 양방향으로 변경하는 방향으로
             * 주체에서 메서드를 만들어 관리하자
-            * */
+            * *//*
 
             tx.commit();
         }catch (Exception e){
@@ -74,7 +99,7 @@ public class JpaMain {
             em.close();
         }
         emf.close();
-    }
+    }*/
 
     // 단원 : 영속성 관리 - 내부 동작 방식
     /*public static void main(String[] args) {
