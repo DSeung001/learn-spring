@@ -22,7 +22,7 @@ public class JpaMain {
 //
 //            Member member = new Member();
 //            member.setUsername("member1");
-//            member.setTeamId(team.getId());
+//            member.changeTeamId(team.getId());
 //            em.persist(member);
 //
 //            Member findMember = em.find(Member.class, member.getId());
@@ -30,24 +30,42 @@ public class JpaMain {
 //            Team findTeam = em.find(Team.class, findTeamId);
 
             // 연관관계 사용 후
+
+            // 저장
+
             Team team = new Team();
             team.setName("TeamA");;
+            // 주인이 아닌 방향, 역방향으로 할 경우 들어가지 않음
+//            team.getMembers().add(member);
             em.persist(team);
 
             Member member = new Member();
             member.setUsername("member1");
-            member.setTeam(team);
+            member.changeTeam(team);
             em.persist(member);
+
+            // changeTeam과 하나를 선택 => 무한루프 방지
+//            team.addMember(member);
+
+//            team.getMembers().add(member);
 
             em.flush();
             em.clear();
 
-            Member findMember = em.find(Member.class, member.getId());
-            List<Member> members = findMember.getTeam().getMembers();
+            Team findTeam = em.find(Team.class, team.getId()); //1차 캐시을 가져오면 jpa가 동작을 안함!
+            // => 작업전 FLUSH 필요
+            List<Member> members = findTeam.getMembers();
+
+            System.out.println("======");
             for (Member m : members) {
-                System.out.println("m.getUsername() = " + m.getUsername());
+                System.out.println("member.getUsername() = " + m.getUsername());
             }
-            Team findTeam = findMember.getTeam();
+            System.out.println("======");
+            /*
+            * 양방향에서는 양쪽에 값을 설정하자
+            * 개발에는 단방향으로 작업하다가 양방향으로 변경하는 방향으로
+            * 주체에서 메서드를 만들어 관리하자
+            * */
 
             tx.commit();
         }catch (Exception e){
