@@ -1,21 +1,25 @@
 package jpabook.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Member {
-    @Id @GeneratedValue
-    @Column(name="MEMBER_ID")
+    @Id
+    @GeneratedValue
+    @Column(name = "MEMBER_ID")
     private Long id;
-
     @Column(length = 10)
     private String name;
-
     private String city;
-
     private String street;
-
     private String zipcode;
+
+    // 관례상 초기화
+    // 연관관계 주인은 맴버, 외래키를 관리하기 때문
+    @OneToMany(mappedBy = "member")
+    private List<Order> orders = new ArrayList<>();
 
     public Long getId() {
         return id;
