@@ -12,9 +12,8 @@ public class Team {
     private Long id;
     private String name;
 
-    // 초기화는 관례로 많이 씀
     @OneToMany(mappedBy = "team")
-    private List<Member> members= new ArrayList<>();
+    private List<Member> members = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -30,18 +29,5 @@ public class Team {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Member> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<Member> members) {
-        this.members = members;
-    }
-
-    public void addMember(Member member) {
-        member.setTeam(this);
-        members.add(member);
     }
 }
