@@ -19,6 +19,11 @@ public class Member {
     @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false)
     private Team team;
 
+    // 조인컬럼 디폴트가 별로이기도 하고 가독성을 위헤 넣는거 추천
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
+
     public Long getId() {
         return id;
     }
