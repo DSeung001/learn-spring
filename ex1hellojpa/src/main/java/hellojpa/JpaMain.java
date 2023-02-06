@@ -7,8 +7,43 @@ import javax.persistence.Persistence;
 import java.util.List;
 
 public class JpaMain {
-    // 단원 : 다양한 연관관계 매핑
+    // 단원 : 고급 매핑
     public static void main(String[] args) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        try {
+            Movie movie = new Movie();
+            movie.setDirector("봉준호");
+            movie.setActor("배우");
+            movie.setName("기생수");
+            movie.setPrice(10000);
+
+            em.persist(movie);
+
+            // 영속성 컨텍스트 초기화
+            em.flush();
+            em.clear();
+
+//            Movie findMovie = em.find(Movie.class, movie.getId());
+
+            Item findItem = em.find(Item.class, movie.getId());
+            System.out.println("findMovie = " + findItem);
+
+            tx.commit();
+        }catch (Exception e){
+            e.printStackTrace();
+            tx.rollback();
+        }finally {
+            em.close();
+        }
+        emf.close();
+    }
+
+
+    // 단원 : 다양한 연관관계 매핑
+    /*public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -31,7 +66,7 @@ public class JpaMain {
             em.close();
         }
         emf.close();
-    }
+    }*/
 
     // 단원 : 엔티티 매핑
     /*public static void main(String[] args) {

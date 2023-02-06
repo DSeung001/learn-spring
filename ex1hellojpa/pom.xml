@@ -19,13 +19,13 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>5.3.10.Final</version>
+            <version>5.4.13.Final</version>
         </dependency>
         <!--    H2데이터베이스, pc에 설치하면 H2와 같은 버전을 설치  -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>2.1.214</version>
+            <version>1.4.200</version>
         </dependency>
 
         <!-- JDK 11 환경에서 JPA를 실행시키면 에러가 생기므로 별도로 추가-->
