@@ -15,6 +15,7 @@ public class Locker {
     private String name;
 
     // 마찬가지로 주인이 아닌 쪽은 mappedBy로 읽기전용으로 함
-    @OneToOne(mappedBy = "MEMBER_ID")
+    // member의 locker 변수에 매핑
+    @OneToOne(mappedBy = "locker")
     private Member member;
 }

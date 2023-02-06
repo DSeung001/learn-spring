@@ -3,10 +3,12 @@ package hellojpa;
 import javax.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 // @DiscriminatorColumn을 넣어주면 조인 전략에서 서브 타입 구분자를 슈퍼 타입에 컬럼으로 넣어줌
 // SINGLE_TABLE은 구조상 무조건 DiscriminatorColumn 생김
-@DiscriminatorColumn()
+@DiscriminatorColumn(name="D_TYPE")
 // 추상 클래스로 만드는게 맞음
 public abstract class Item {
     @Id
