@@ -1,15 +1,68 @@
 package hellojpa;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import java.time.LocalDateTime;
-import java.util.List;
+import org.hibernate.Hibernate;
+
+import javax.persistence.*;
 
 public class JpaMain {
-    // 단원 : 고급 매핑
+    // 단원 : 프록시와 연관관계 관리
     public static void main(String[] args) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        try {
+
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            em.persist(member1);
+            
+            em.flush();
+            em.clear();
+
+            Member refMember = em.getReference(Member.class, member1.getId());
+            System.out.println("refMember = " + refMember.getClass()); // proxy
+            refMember.getUsername();
+            System.out.println("emf.getPersistenceUnitUtil().isLoaded() = " + emf.getPersistenceUnitUtil().isLoaded(refMember));
+            Hibernate.initialize(refMember); // 강제 초기화
+
+
+            // 아래 3개는 준영속으로 만들어서 refMember에서 에러 발생
+//            em.close();
+//            em.clear();
+//            em.detach(refMember); // 영속성 컨텍스트에서 제외 => 준영속으로 만들어서 refMember에서 에러 발생
+//
+//            refMember.getUsername(); // 프록시 초기화
+//
+//            System.out.println("refMember.getUsername() = " + refMember.getUsername());
+
+          /*  // getReference, 영속성에 있다면 프록시가 아닌 실제 값을 줌
+            Member findMember = em.find(Member.class, member1.getId());
+            System.out.println("findMember = " + findMember.getClass()); // member
+
+            // 아래 ==은 한 영속성 컨텍스트에서 가져온 것이기에 항상 true를 반환함
+            System.out.println("a == a : "+(refMember == findMember));*/
+
+
+            tx.commit();
+        }catch (Exception e){
+            e.printStackTrace();
+            tx.rollback();
+        }finally {
+            em.close();
+        }
+        emf.close();
+    }
+
+    /*private static void logic(Member m1, Member m2) {
+        System.out.println("m1 == m2 : " + (m1 instanceof Member));
+        System.out.println("m1 == m2 : " + (m2 instanceof Member));
+        // 이 경우 프록시를 쓸 수 있으므로 == 비교가 아닌 instanceof 사용을 권장
+    }*/
+
+
+    // 단원 : 고급 매핑
+    /*public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -24,7 +77,7 @@ public class JpaMain {
             em.flush();
             em.close();
 
-            /*Movie movie = new Movie();
+            *//*Movie movie = new Movie();
             movie.setDirector("봉준호");
             movie.setActor("배우");
             movie.setName("기생수");
@@ -40,7 +93,7 @@ public class JpaMain {
 
             Item findItem = em.find(Item.class, movie.getId());
             System.out.println("findMovie = " + findItem);
-*/
+*//*
             tx.commit();
         }catch (Exception e){
             e.printStackTrace();
@@ -49,7 +102,7 @@ public class JpaMain {
             em.close();
         }
         emf.close();
-    }
+    }*/
 
 
     // 단원 : 다양한 연관관계 매핑
