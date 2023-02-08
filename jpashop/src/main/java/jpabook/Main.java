@@ -1,9 +1,6 @@
 package jpabook;
 
 import jpabook.domain.Book;
-import jpabook.domain.Member;
-import jpabook.domain.Order;
-import jpabook.domain.OrderItem;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
