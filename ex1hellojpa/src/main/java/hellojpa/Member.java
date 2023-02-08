@@ -16,10 +16,11 @@ public class Member extends BaseEntity{
     @Column(name = "USERNAME")
     private String username;
 
-    // 일대다 양방향을 억지로 넣어보자
+    // 일대다 양방향을 억지로 넣어보자 = @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false)
     // 매핑되지만 읽기 전용으로 만드는 것
-    @ManyToOne
-    @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false)
+//    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
     private Team team;
 
     public Long getId() {

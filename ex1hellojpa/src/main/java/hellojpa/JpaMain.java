@@ -3,10 +3,55 @@ package hellojpa;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.List;
 
 public class JpaMain {
-    // 단원 : 프록시와 연관관계 관리
+    // 단원 : 프록시와 연관관계 - 즉시 로딩과 지연 로딩
     public static void main(String[] args) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        try {
+            Team teamA = new Team();
+            teamA.setName("teamA");
+            em.persist(teamA);
+
+            Team teamB = new Team();
+            teamB.setName("teamB");
+            em.persist(teamB);
+
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            member1.setTeam(teamA);
+            em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setUsername("member1");
+            member2.setTeam(teamB);
+            em.persist(member2);
+
+            em.flush();
+            em.clear();
+
+//            Member m = em.find(Member.class, member1.getId());
+
+            List<Member> members = em.createQuery("select m from Member m", Member.class).getResultList();
+
+
+
+            tx.commit();
+        }catch (Exception e){
+            e.printStackTrace();
+            tx.rollback();
+        }finally {
+            em.close();
+        }
+        emf.close();
+    }
+
+    // 단원 : 프록시와 연관관계 관리 - 프록시
+    /*public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -36,12 +81,12 @@ public class JpaMain {
 //
 //            System.out.println("refMember.getUsername() = " + refMember.getUsername());
 
-          /*  // getReference, 영속성에 있다면 프록시가 아닌 실제 값을 줌
+          *//*  // getReference, 영속성에 있다면 프록시가 아닌 실제 값을 줌
             Member findMember = em.find(Member.class, member1.getId());
             System.out.println("findMember = " + findMember.getClass()); // member
 
             // 아래 ==은 한 영속성 컨텍스트에서 가져온 것이기에 항상 true를 반환함
-            System.out.println("a == a : "+(refMember == findMember));*/
+            System.out.println("a == a : "+(refMember == findMember));*//*
 
 
             tx.commit();
@@ -52,7 +97,7 @@ public class JpaMain {
             em.close();
         }
         emf.close();
-    }
+    }*/
 
     /*private static void logic(Member m1, Member m2) {
         System.out.println("m1 == m2 : " + (m1 instanceof Member));
