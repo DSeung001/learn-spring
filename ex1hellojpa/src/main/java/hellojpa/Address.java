@@ -22,23 +22,24 @@ public class Address {
         return city;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
     public String getStreet() {
         return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
     }
 
     public String getZipcode() {
         return zipcode;
     }
 
-    public void setZipcode(String zipcode) {
+    // setter는 못쓰게 지우가나 private로 바꿔서 못쓰게 함
+    private void setCity(String city) {
+        this.city = city;
+    }
+
+    private void setStreet(String street) {
+        this.street = street;
+    }
+
+    private void setZipcode(String zipcode) {
         this.zipcode = zipcode;
     }
 }

@@ -13,12 +13,26 @@ public class JpaMain {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try {
+            Address address = new Address("city", "street","zipcode");
+
             Member member = new Member();
-            member.setUsername("hello");
-            member.setHomeAddress(new Address(
-                    "city", "street","zipcode"
-            ));
-            member.setWorkPeriod(new Period());
+            member.setUsername("member1");
+            member.setHomeAddress(address);
+            em.persist(member);
+
+            // 업데이트 시 통으로 업데이트 (불변을 지켜야하니깐)
+            Address newAddress = new Address("newCity", address.getStreet(), address.getZipcode());
+            member.setHomeAddress(newAddress);
+
+            Address copyAddress = new Address("newCity", address.getStreet(), address.getZipcode());
+
+            Member member2 = new Member();
+            member2.setUsername("member2");
+            member2.setHomeAddress(copyAddress);
+            em.persist(member2);
+
+//            불변으로 바꿔서 이제 setter은 안됨
+//            member.getHomeAddress().setCity("newCity");
 
             em.persist(member);
 
