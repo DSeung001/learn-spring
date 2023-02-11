@@ -4,10 +4,74 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
-    // 단원 : 값 타입
+    // 단원 : 값 타입 컬랙션
     public static void main(String[] args) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        try {
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setHomeAddress(new Address("homeCity", "street", "100000"));
+
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("족발");
+            member.getFavoriteFoods().add("피자");
+
+//            member.getAddressHistory().add(new Address("old1", "street", "10000"));
+//            member.getAddressHistory().add(new Address("old2", "street", "10000"));
+            member.getAddressHistory().add(new AddressEntity("old1", "street", "10000"));
+            member.getAddressHistory().add(new AddressEntity("old2", "street", "10000"));
+
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            System.out.println("============ START ===========");
+            // 값 타입의 나머지는 지연 로딩
+            Member findMember = em.find(Member.class, member.getId());
+
+//            List<Address> addressHistory = findMember.getAddressHistory();
+//            for (Address address : addressHistory) {
+//                System.out.println("address = " + address.getCity());
+//            }
+//            Set<String> favoriteFoods = findMember.getFavoriteFoods();
+//            for (String favoriteFood : favoriteFoods) {
+//                System.out.println("favoriteFood = " + favoriteFood);
+//            }
+
+            Address a = findMember.getHomeAddress();
+            findMember.setHomeAddress(new Address("newCity", a.getStreet(), a.getZipcode()));
+
+            // 치킨 -> 한식, 애도 임뮤터블해야함 => 어떤게 값을 참조할지 모르니~
+            findMember.getFavoriteFoods().remove("치킨");
+            findMember.getFavoriteFoods().add("치킨");
+
+            System.out.println("============ Address ===========");
+            // 대부분 컬랙션을 값을 지울 때 equals로 해결함, 그래서 임베디드 값 타입의 equals를 잘 해줘야함
+            // 연관돤 Address를 다 지우고 다시 값을 넣음 => 왜냐하면 값 타입은 엔티티와 다르게 식벽잘가 없기에 업데이트하는 로직이 힘들어짐
+            // 이걸 해결할 수 있지만 @OrderColumn 등을 넣어서로 되지만, 로직이 복잡해짐
+            // 왜케 복잡하기만 하냐 그래서 결론은 일대다 관계를 쓰는 걸 고려하는게 실무에서 좋다
+//            findMember.getAddressHistory().remove(new Address("old1", "street", "10000"));
+//            findMember.getAddressHistory().add(new Address("newCity1", "street", "10000"));
+
+            tx.commit();
+        }catch (Exception e){
+            e.printStackTrace();
+            tx.rollback();
+        }finally {
+            em.close();
+        }
+        emf.close();
+    }
+
+    // 단원 : 값 타입
+    /*public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -44,7 +108,7 @@ public class JpaMain {
             em.close();
         }
         emf.close();
-    }
+    }*/
 
     // 단원 : 프록시와 연관관계
     /*public static void main(String[] args) {
