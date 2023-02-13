@@ -1,14 +1,71 @@
 package hellojpa;
 
+import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Set;
 
 public class JpaMain {
-    // 단원 : 값 타입 컬랙션
+    // 단원 : JPQL 소개
     public static void main(String[] args) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        try {
+            Member member = new Member();
+            member.setUsername("memeber1");
+            em.persist(member);
+
+            // dbconn.executeQuery("쿼리") <- jpa가 아니므로 실행하기 전에 오토 flush가 안됨 => 강제로 플러시 필요 em.flush()
+
+            // 네이티브 쿼리, 네이티브가 필요할 땐 이거보단 SpringJdbcTemplate가 편하대
+            List<Member> resultList = em.createNativeQuery("select MEMBER_ID, city, street, zipcode, USERNAME FROM MEMBER", Member.class).getResultList();
+            for (Member member1 : resultList) {
+                System.out.println("member1 = " + member1);
+            }
+
+            // JPQL
+//            String qlString = "SELECT m FROM Member m WHERE m.username like '%kim%'";
+//            List<Member> result = em.createQuery(
+//                    qlString,
+//                    Member.class
+//            ).getResultList();
+//            for (Member member : result) {
+//                System.out.println("member = " + member);
+//            }
+
+            // Criteria => 망한 스펙, 김영한님은 실무에서 안씀, 매우 복잡 => QueryDSL 사용을 추천
+//            CriteriaBuilder cb = em.getCriteriaBuilder();
+//            CriteriaQuery<Member> query = cb.createQuery(Member.class);
+//
+//            Root<Member> m = query.from(Member.class);
+//
+//            CriteriaQuery<Member> cq = query.select(m);
+//
+//            String username = "dsad";
+//            if (username != ""){
+//                cq = cq.where(cb.equal(m.get("username"), "kim"));
+//            }
+//            List<Member> resultList = em.createQuery(cq).getResultList();
+
+            tx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+        emf.close();
+    }
+
+    // 단원 : 값 타입 컬랙션
+   /* public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -68,7 +125,7 @@ public class JpaMain {
             em.close();
         }
         emf.close();
-    }
+    }*/
 
     // 단원 : 값 타입
     /*public static void main(String[] args) {
