@@ -11,8 +11,44 @@ import java.util.List;
 import java.util.Set;
 
 public class JpaMain {
-    // 단원 : JPQL 소개
+
+    // 단원 : JPQL 프로젝션 SELECT
     public static void main(String[] args) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        try {
+            Member member = new Member();
+            member.setUsername("memeber1");
+            member.setAge(10);
+            em.persist(member);
+
+            // JPQL로 가져온 얘들도 영속성으로 관리
+//            List<Member> result = em.createQuery("select m from Member m", Member.class).getResultList();
+            // 자동 업데이트가 됨
+//            Member findMember = result.get(0);
+//            findMember.setAge(20);
+
+            // 자동 조인을 하지만
+//            List<Team> result = em.createQuery("select m.team from Member m", Team.class).getResultList();
+//            List<Team> result = em.createQuery("select t from Member m join  m.team t", Team.class).getResultList();
+
+
+            List<Team> result = em.createQuery("select o.address from Order o", Address.class).getResultList();
+
+            tx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            tx.rollback();
+        } finally {
+            em.close();
+        }
+        emf.close();
+    }
+
+    // 단원 : JPQL 소개
+    /*public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -62,7 +98,7 @@ public class JpaMain {
             em.close();
         }
         emf.close();
-    }
+    }*/
 
     // 단원 : 값 타입 컬랙션
    /* public static void main(String[] args) {

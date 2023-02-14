@@ -22,6 +22,8 @@ public class Member extends BaseEntity{
     @Embedded
     private Address homeAddress;
 
+    private Integer age;
+
     // String 컬렉션으로 컬럼 지정이 필요
     @ElementCollection
     @CollectionTable(name = "FAVORITE_FOOD", joinColumns = @JoinColumn(name = "MEMBER_ID"))
@@ -36,6 +38,12 @@ public class Member extends BaseEntity{
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "MEMBER_ID")
     private List<AddressEntity> addressHistory = new ArrayList<>();
+
+    // 일대다 양방향을 억지로 넣어보자
+    // 매핑되지만 읽기 전용으로 만드는 것
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false)
+    private Team team;
 
     public Long getId() {
         return id;
@@ -61,6 +69,14 @@ public class Member extends BaseEntity{
         this.homeAddress = homeAddress;
     }
 
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
     public Set<String> getFavoriteFoods() {
         return favoriteFoods;
     }
@@ -75,5 +91,13 @@ public class Member extends BaseEntity{
 
     public void setAddressHistory(List<AddressEntity> addressHistory) {
         this.addressHistory = addressHistory;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }
