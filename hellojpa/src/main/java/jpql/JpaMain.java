@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class JpaMain {
 
-    // 패치 조인 2 - 한계
+    // 패치 조인 2 - 한계 ~ 엔티티 직접 사용
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
@@ -45,7 +45,7 @@ public class JpaMain {
 
             em.flush();
             em.clear();
-
+            // 패치 조인 2
             String query = "select t from Team t";
             List<Team> resultList = em.createQuery(query, Team.class)
                     .setFirstResult(0)
@@ -59,6 +59,22 @@ public class JpaMain {
                 for (Member member : team.getMembers()) {
                     System.out.println("member = " + member);
                 }
+            }
+
+            // 엔티티 직접 사용
+//            String query1 = "select m from Member m where m = :member";
+//            Member findMember = em.createQuery(query1, Member.class)
+//                    .setParameter("member", member1)
+//                    .getSingleResult();
+            String query1 = "select m from Member m where m.team = :team";
+
+            List<Member> members1 = em.createQuery(query1, Member.class)
+                    .setParameter("team", teamA)
+                    .getResultList();
+//            System.out.println("findMember = " + findMember);
+
+            for (Member member : members1) {
+                System.out.println("member = " + member);
             }
 
             tx.commit();

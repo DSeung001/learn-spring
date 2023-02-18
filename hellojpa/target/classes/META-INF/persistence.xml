@@ -18,6 +18,7 @@
             <property name="hibernate.use_sql_comments" value="true"/>
             <!-- @Entity로 등록해둔 걸 ddl로 만들어줌-->
             <property name="hibernate.hbm2ddl.auto" value="create" />
+            <property name="hibernate.default_batch_fetch_size" value="100"/>
         </properties>
     </persistence-unit>
 </persistence>
