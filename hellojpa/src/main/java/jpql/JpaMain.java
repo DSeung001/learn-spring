@@ -5,9 +5,45 @@ import java.util.List;
 import java.util.Objects;
 
 public class JpaMain {
+    // 페이징 API
+    public static void main(String[] args) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        try {
+
+            for (int i = 0; i< 100; i++){
+                Member member = new Member();
+                member.setUsername("memeber"+i);
+                member.setAge(i);
+                em.persist(member);
+            }
+
+            em.flush();
+            em.clear();
+
+            List<Member> result = em.createQuery("select m from Member m order by m.age desc", Member.class)
+                    .setFirstResult(1).setMaxResults(10).getResultList();
+
+            System.out.println("result.size() = " + result.size());
+            for (Member member1 : result) {
+                System.out.println("member1 = " + member1);
+            }
+            
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+        emf.close();
+    }
 
     // 프로젝트
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -65,7 +101,7 @@ public class JpaMain {
             em.close();
         }
         emf.close();
-    }
+    }*/
 
     // 기본문법과 쿼리 API
     /*public static void main(String[] args) {

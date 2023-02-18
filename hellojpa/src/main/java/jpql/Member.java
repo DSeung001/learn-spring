@@ -16,7 +16,7 @@ public class Member {
 
     @ManyToOne
     @JoinColumn(name = "PRODUCT_ID")
-    private Product $product;
+    private Product product;
 
     public Long getId() {
         return id;
@@ -50,11 +50,20 @@ public class Member {
         this.team = team;
     }
 
-    public Product get$product() {
-        return $product;
+    public Product getProduct() {
+        return product;
     }
 
-    public void set$product(Product $product) {
-        this.$product = $product;
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", age=" + age +
+                '}';
     }
 }
