@@ -5,8 +5,79 @@ import java.util.List;
 import java.util.Objects;
 
 public class JpaMain {
-    // 조인
+
     public static void main(String[] args) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        try {
+
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("teamA");
+            member.setType(MemberType.ADMIN);
+            member.setAge(10);
+            member.setTeam(team);
+            em.persist(member);
+
+            Member member1 = new Member();
+            member1.setUsername("100");
+            em.persist(member1);
+
+            Member member2 = new Member();
+            em.persist(member2);
+
+            em.flush();
+            em.clear();
+
+            // JPQL 타입
+//            String query = "select m.username, 'HELLO', true from Member m " +
+//                    "where m.type=jpql.MemberType.ADMIN";
+/*            String query = "select m.username, 'HELLO', true from Member m " +
+                    "where m.type=:userType and " +
+                    " m.age between 0 and 100";
+            List<Object[]> result = em.createQuery(query)
+                    .setParameter("userType", MemberType.ADMIN)
+                    .getResultList();
+
+
+            for (Object[] objects : result) {
+                System.out.println("objects[0] = " + objects[0]);
+                System.out.println("objects[1] = " + objects[1]);
+                System.out.println("objects[2] = " + objects[2]);
+            }*/
+
+            // 조건식 case
+//            String query = "select" +
+//                    " case when m.age <= 10 then '학생요금'" +
+//                    " when m.age >= 60 then '경로요금'" +
+//                    " else '일반요금'" +
+//                    " end" +
+//                    " from Member m";
+
+//            String query = "select coalesce(m.username, '이름 없는 회원') as username from Member m";
+            String query = "select nullif(m.username, 'teamA') as username from Member m";
+            List<String> resultList = em.createQuery(query, String.class).getResultList();
+            for (String s : resultList) {
+                System.out.println("s = " + s);
+            }
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+        emf.close();
+    }
+
+    // 조인
+    /*public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -48,7 +119,7 @@ public class JpaMain {
             em.close();
         }
         emf.close();
-    }
+    }*/
 
     // 페이징 API
     /*public static void main(String[] args) {
