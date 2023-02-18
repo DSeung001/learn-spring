@@ -6,8 +6,92 @@ import java.util.List;
 import java.util.Objects;
 
 public class JpaMain {
+    // 패치 조인 1 - 기본
+    public static void main(String[] args) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        try {
 
-    // JPQL 타입 표현과 기타식 ~ JPQL 함수
+            Team teamA = new Team();
+            teamA.setName("teamA");
+            em.persist(teamA);
+
+            Team teamB = new Team();
+            teamB.setName("teamB");
+            em.persist(teamB);
+
+            Member member1 = new Member();
+            member1.setUsername("회원1");
+            member1.setTeam(teamA);
+            em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setUsername("회원2");
+            member2.setTeam(teamA);
+            em.persist(member2);
+
+            Member member3 = new Member();
+            member3.setUsername("회원3");
+            member3.setTeam(teamB);
+            em.persist(member3);
+
+            Member member4 = new Member();
+            member4.setUsername("회원4");
+            member4.setTeam(teamB);
+            em.persist(member4);
+            
+            em.flush();
+            em.clear();
+
+            // 설정을 지연 로딩
+            // join fatch를 함으로써 프록시를 사용하지 않고 실제 데이터를 가져오는 형태로 데이터를 바로 채움
+/*            String query = "select m from Member m join fetch m.team";
+            List<Member> resultList = em.createQuery(query, Member.class).getResultList();
+
+            for (Member member : resultList) {
+                System.out.println("member.getUsername() + \", \"+member.getTeam().getName() = " + member.getUsername() + ", "+member.getTeam().getName());
+            }*/
+
+            // 패치 조인
+            String query = "select distinct t from Team t join fetch t.members";
+            List<Team> resultList = em.createQuery(query, Team.class).getResultList();
+
+            System.out.println("resultList.size() = " + resultList.size());
+
+            for (Team team : resultList) {
+                System.out.println("team.getName()+ \" | \"+team.getMembers().size() = " + team.getName()+ " | "+team.getMembers().size());
+                for (Member member : team.getMembers()) {
+                    System.out.println("member = " + member);
+                }
+            }
+
+            // 일반 조인
+            String query2 = "select t from Team t join t.members m";
+            List<Team> resultList2 = em.createQuery(query2, Team.class).getResultList();
+
+            System.out.println("resultList.size() = " + resultList2.size());
+
+            for (Team team : resultList2) {
+                System.out.println("team.getName()+ \" | \"+team.getMembers().size() = " + team.getName()+ " | "+team.getMembers().size());
+                for (Member member : team.getMembers()) {
+                    System.out.println("member = " + member);
+                }
+            }
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+        emf.close();
+    }
+
+    // JPQL 타입 표현과 기타식 ~ JPQL 함수 ~ 경로 표현식
+    /*
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
@@ -75,7 +159,7 @@ public class JpaMain {
 //            for (Integer i : resultList) {
 //                System.out.println("i = " + i);
 //            }
-
+*/
 /*            // JPQL 타입
 //            String query = "select m.username, 'HELLO', true from Member m " +
 //                    "where m.type=jpql.MemberType.ADMIN";
@@ -106,7 +190,7 @@ public class JpaMain {
             List<String> resultList = em.createQuery(query, String.class).getResultList();
             for (String s : resultList) {
                 System.out.println("s = " + s);
-            }*/
+            }*//*
 
             tx.commit();
         } catch (Exception e) {
@@ -116,7 +200,7 @@ public class JpaMain {
             em.close();
         }
         emf.close();
-    }
+    }*/
 
     // 조인
     /*public static void main(String[] args) {
