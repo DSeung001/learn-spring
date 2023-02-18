@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class JpaMain {
 
+    // JPQL 타입 표현과 기타식 ~ JPQL 함수
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
@@ -34,10 +35,36 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // JPQL 타입
+            String query ="select concat('a','b'), substring(m.username, 2,3), locate('e','abcdegf') from Member m";
+            List<Object[]> result = em.createQuery(query).getResultList();
+
+            for (Object[] objects : result) {
+                System.out.println("objects[0] = " + objects[0]);
+                System.out.println("objects[0] = " + objects[1]);
+                System.out.println("objects[0] = " + objects[2]);
+            }
+
+            em.flush();
+            em.clear();
+            
+            String query2 = "select group_concat(m.username) From Member m";
+            List<String> result2 = em.createQuery(query2, String.class).getResultList();
+
+            for (String s : result2) {
+                System.out.println("s = " + s);
+            }
+
+//            String query1 = "select size(t.members) from Team t";
+//            List<Integer> resultList = em.createQuery(query1, Integer.class)
+//                    .getResultList();
+//            for (Integer i : resultList) {
+//                System.out.println("i = " + i);
+//            }
+
+/*            // JPQL 타입
 //            String query = "select m.username, 'HELLO', true from Member m " +
 //                    "where m.type=jpql.MemberType.ADMIN";
-/*            String query = "select m.username, 'HELLO', true from Member m " +
+            String query = "select m.username, 'HELLO', true from Member m " +
                     "where m.type=:userType and " +
                     " m.age between 0 and 100";
             List<Object[]> result = em.createQuery(query)
@@ -49,7 +76,7 @@ public class JpaMain {
                 System.out.println("objects[0] = " + objects[0]);
                 System.out.println("objects[1] = " + objects[1]);
                 System.out.println("objects[2] = " + objects[2]);
-            }*/
+            }
 
             // 조건식 case
 //            String query = "select" +
@@ -64,7 +91,7 @@ public class JpaMain {
             List<String> resultList = em.createQuery(query, String.class).getResultList();
             for (String s : resultList) {
                 System.out.println("s = " + s);
-            }
+            }*/
 
             tx.commit();
         } catch (Exception e) {
