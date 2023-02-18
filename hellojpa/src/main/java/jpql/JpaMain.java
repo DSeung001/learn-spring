@@ -1,6 +1,7 @@
 package jpql;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,13 +47,27 @@ public class JpaMain {
 
             em.flush();
             em.clear();
-            
+
             String query2 = "select group_concat(m.username) From Member m";
             List<String> result2 = em.createQuery(query2, String.class).getResultList();
 
             for (String s : result2) {
                 System.out.println("s = " + s);
             }
+            // 상태 필드
+//            String query3 = "select m.username From Member m";
+            // 단일 값 연관 경로
+//            String query3 = "select m.team From Member m";
+            // 컬랙션 값 연관 경로
+//            String query3 = "select t.members From Team t";
+
+            // 이거 써라 ~
+            String query3 = "select m.username From Team t join t.members m";
+            List<Collection> result3 = em.createQuery(query3, Collection.class)
+                            .getResultList();
+
+            System.out.println("result3 = " + result3);
+            
 
 //            String query1 = "select size(t.members) from Team t";
 //            List<Integer> resultList = em.createQuery(query1, Integer.class)
