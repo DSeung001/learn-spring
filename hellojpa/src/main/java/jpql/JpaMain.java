@@ -26,20 +26,24 @@ public class JpaMain {
             Member member1 = new Member();
             member1.setUsername("회원1");
             member1.setTeam(teamA);
+            member1.setAge(0);
             em.persist(member1);
 
             Member member2 = new Member();
             member2.setUsername("회원2");
             member2.setTeam(teamA);
+            member2.setAge(0);
             em.persist(member2);
 
             Member member3 = new Member();
             member3.setUsername("회원3");
+            member3.setAge(0);
             member3.setTeam(teamB);
             em.persist(member3);
 
             Member member4 = new Member();
             member4.setUsername("회원4");
+            member4.setAge(0);
             member4.setTeam(teamB);
             em.persist(member4);
 
@@ -87,6 +91,18 @@ public class JpaMain {
                 System.out.println("member = " + member);
             }
 
+            // 벌크 연산
+            String query2 = "update Member m set m.age = 20";
+            int resultCount = em.createQuery(query2).executeUpdate();
+            // createNamedQuery 실행 전에 자동 flush, clear를 해주지만 그 때 시점의 member1은 age가 0이다
+            Member findMember = em.find(Member.class, member1.getId());
+            System.out.println("resultCount = " + resultCount);
+            System.out.println("member1.getAge() = " + member1.getAge());
+            System.out.println("findMember = " + findMember);
+            // 그렇기에 update 후 clear 필요
+            em.clear();
+            findMember = em.find(Member.class, member1.getId());
+            System.out.println("findMember = " + findMember);
 
             tx.commit();
         } catch (Exception e) {
