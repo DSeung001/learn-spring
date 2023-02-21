@@ -17,7 +17,10 @@
 - 지금까지 배운 개념들을 토대로 타임리프를 이용해서 CRU 기능 만들기, PGR 개념 학습 (2023.01.22 ~ 2023.01.23)
 ### ex1hellojpa
 - [자바 ORM 표준 JPA 프로그래밍 - 기본편](https://www.inflearn.com/course/ORM-JPA-Basic/dashboard)
-- JPA 기본 개념인 영속성, 플러시, 준영속, 테이블 매핑, 컬럼 매핑, 키 매핑, 연관관계 기초 학습 (2023.01.26 ~)
+- JPA 기본 개념인 영속성, 플러시, 준영속, 테이블 매핑, 컬럼 매핑, 키 매핑, 연관관계 기초 학습 (2023.01.26 ~ 2023.02.19)
 ### jspshop
 - [자바 ORM 표준 JPA 프로그래밍 - 기본편](https://www.inflearn.com/course/ORM-JPA-Basic/dashboard)
-- 자바 ORM 표준 JPA 프로그래밍 - 기본편의 학습 내용을 통한 예제 작성 (2023.01.30 ~ )
+- 자바 ORM 표준 JPA 프로그래밍 - 기본편의 학습 내용을 통한 예제 작성 (2023.01.30 ~ 2023.02.19)
+### jpabook.jpashop
+- [실전! 스프링 부트와 JPA 활용1 - 웹 애플리케이션 개발](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-JPA-%ED%99%9C%EC%9A%A9-1/dashboard)
+- JPA 활용 - (2023.02.21 ~ )
