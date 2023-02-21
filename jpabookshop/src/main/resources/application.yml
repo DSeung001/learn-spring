@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~jpabookshop;MVC=TRUE
+    url: jdbc:h2:tcp://localhost/~/jpabookshop
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -10,10 +10,10 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-#        show_sql: true
+        #        show_sql: true
         format_sql: true
 
-logging:
-  level:
-#   로그에 출력 => 실무는 이거 써야함
-    org.hibernate.SQL: debug
+logging.level:
+  #   로그에 출력 => 실무는 이거 써야함
+  org.hibernate.SQL: debug
+#  org.hibernate.type: trace 쿼리파라미터까지 남겨줌, 근데 외부라이브러리 쓰는 걸 강사는 추천
