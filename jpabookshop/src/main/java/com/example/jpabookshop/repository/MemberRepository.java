@@ -1,6 +1,8 @@
 package com.example.jpabookshop.repository;
 
 import com.example.jpabookshop.domain.Member;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -9,11 +11,15 @@ import java.util.List;
 
 // Repository => Component 가 안에 있어 스프링에서 스캔해감
 @Repository
+@RequiredArgsConstructor
 public class MemberRepository {
 
     // 자동 주입
-    @PersistenceContext
-    private EntityManager em;
+    private final EntityManager em;
+
+    /*public MemberRepository(EntityManager em) {
+        this.em = em;
+    }*/
 
     public void save(Member member){
         em.persist(member);
